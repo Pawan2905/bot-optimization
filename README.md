@@ -34,3 +34,26 @@ The following scripts serve as standalone references for specific steps in the d
 ### 5. Guardrail and Routing Overhead
 * **File:** `detect_05_guardrail_and_routing_overhead.py`
 * **Focus:** Measures the time spent on safety guardrails and decision-tree routing logic.
+
+
+## The One-Sentence Summary
+ 
+A single database query is taking 74 seconds and returning zero results — fixing that one call (plus four other quick wins) cuts worst-case latency from 143 seconds to under 20 seconds.
+ 
+## Key Findings At a Glance
+ 
+| Use Case | Current Latency | Target Latency | Primary Fix |
+|----------|----------------|----------------|-------------|
+| Defects Search | 81.8s | 5–8s | Cache KB queries (1h TTL) |
+| Troubleshooting | 143.6s worst | 10–20s | Circuit-breaker + static schema + KB cache |
+| Case Update | 36.7s | 15–20s | Forced action sequence in prompt |
+| Firmware Rec | 19.4s | 3–5s | Cache firmware API (24h TTL) |
+ 
+## Top 3 Quick Wins (Implement This Sprint)
+ 
+1. **Add Redis/DynamoDB cache to `/knowledge-base/query`** — saves up to 74s per hit
+2. **Circuit-breaker: skip KB lookup when SQL returns 0 rows** — prevents 143s worst case
+3. **Move DB schema into system prompt** — removes 5–10s runtime API call
+## Contact
+ 
+Questions about the analysis methodology, implementation details, or trace data interpretation — reach out to the team that prepared this analysis.
